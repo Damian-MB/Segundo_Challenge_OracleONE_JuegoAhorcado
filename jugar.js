@@ -1,15 +1,30 @@
 var pantalla = document.querySelector("canvas");
 var pincel = pantalla.getContext("2d");
 var matrizPalabrasAleatorias = ["ARBOL", "MARTILLO","CHAPA","ALFAJOR","NEUTRON",
-"ASNO","VIENTO","CIELO","CINTA","ARROZ","CASTILLO","PAYASO","GRILLO"];
+"ASNO","VIENTO","CIELO","CINTA","ARROZ","CASTILLO","PAYASO","GRILLO","KOALA","ORACLE","ALURA",
+"VERANO","MUSICA","FUTBOL","NIEVE","LUNA","CUNA","ESPUMA","YESO","PASTO","PELOTA","ZAPATO",
+"CUCHARA","MATE","PLAYA","ARENA","BRILLO","CHACRA","IDIOMA","FLAUTA","PESTAÑA","CANCHA",
+"SOGA","IGLESIA","AVION","AUTOBUS","BIROME","QUESO","PEQUEÑO","CODIGO","SENCILLO","HECHIZO",
+"RIVER","MADRID","AVENTURA","CENTRAL","CABLE","TIJERA","JIRAFA","BRASIL","CREMA","TERMO"];
 var palabraSecreta = "";
 var letraIngresada = "";
 let expReg = /[A-Za-z]/;
 var letrasErradas = [];
+var letrasAcertadas = [];
 var contador;
 var errada;
+var acertada;
 var cantidadLetrasErradas = 0;
+var cantidadLetrasAcertadas = 0;
+var finDelJuego = false;
 
+
+function iniciarJuego() {
+    pintarPantalla();
+    dibujarHorca();
+    palabraSecreta = seleccionarPalabraSecreta();
+    dibujarLineas();
+}
 function pintarPantalla() {
     pincel.fillStyle = "#FADBD8";
     pincel.fillRect(0,0,800,380);
@@ -58,7 +73,7 @@ function dibujarLineas() {
     var cantidadLetras = palabraSecreta.length;
     var i = 0;
     while (i < cantidadLetras) {
-        pincel.strokeStyle = "blue";
+        pincel.strokeStyle = "black";
         pincel.lineWidth = 1.5;
         pincel.beginPath();
         pincel.moveTo(350 + 50*i,310);
@@ -74,7 +89,7 @@ function validarLetraIngresada() {
         letraIngresada = null;
     } else {
         letraIngresada = null;
-        alert("Por favor, ingrese sólo letras y sin acentos!. No se admiten caracteres especiales."); 
+        alert("Por favor, ingrese sólo letras y sin acentos!. Tampoco se admiten caracteres especiales."); 
     }
 }
 function chequearErrada() {
@@ -85,49 +100,182 @@ function chequearErrada() {
         }
     });
 }
+function chequearAcertada() {
+    acertada = false;
+    letrasAcertadas.forEach(element => {
+        if (letraIngresada == element) {
+            acertada = true;
+        }
+    });
+}
 function anotarLetra() {
-    if (letraIngresada != null) {
+    chequearAcertada();
+    if (letraIngresada != null && acertada == false) {
         for (let i = 0; i < palabraSecreta.length; i++) {
             if (letraIngresada == palabraSecreta[i]) {
-                pincel.fillStyle = "black";
-                pincel.font = '50px serif';
-                pincel.fillText(palabraSecreta[i],350 + 50*i,300);
+                    pincel.fillStyle = "black";
+                    pincel.font = '50px serif';
+                    pincel.fillText(palabraSecreta[i],350 + 50*i,300);
+                    letrasAcertadas.push(letraIngresada);
+                    cantidadLetrasAcertadas++;
+                    if (cantidadLetrasAcertadas == palabraSecreta.length) {
+                        setInterval(mostrarResultadoPositivo,300);
+                        finDelJuego = true;
+                        console.log(finDelJuego);
+                    }
             } else {
                 contador++;
                 if (contador == palabraSecreta.length) {
                     chequearErrada();
                     if (errada == false) { 
                         pincel.fillStyle = "black";
-                        pincel.font = '35px serif';
-                        pincel.fillText(letraIngresada,350 + 50*cantidadLetrasErradas,200);
+                        pincel.font = '30px serif';
+                        pincel.fillText(letraIngresada,360 + 50*cantidadLetrasErradas,365);
                         letrasErradas.push(letraIngresada);
                         cantidadLetrasErradas++;
-                    }
+                        graficar();
+                    } else alert("La letra " + letraIngresada + " ya fue ingresada y no forma parte de la palabra secreta. Ingrese un nuevo caracter." );
                 }
             }
         }
+    } else if(acertada == true) {
+        alert("Ingrese nuevas letras para descubrir la palabra secreta. La letra " + letraIngresada + " ya fue elegida anteriormente.");
     }
 }
 function verificarLetraIngresada(evento) {
-    contador = 0;
-    letraIngresada = evento.key;
-    validarLetraIngresada();
-    anotarLetra();
+    if (finDelJuego == false) {
+        contador = 0;
+        letraIngresada = evento.key;
+        validarLetraIngresada();
+        anotarLetra();
+    }
 }
-function escribirPalabra(palabra) {
+function mostrarPalabraSecreta() {
     pincel.fillStyle = "black";
-    pincel.font = '50px serif';
-    pincel.fillText(palabra,380,100);
+    pincel.font = '30px serif';
+    pincel.fillText("La palabra era: "+ palabraSecreta,380,100);
+}
+function mostrarResultadoNegativo() {
+    pincel.fillStyle = "red";
+    pincel.font = '38px serif';
+    pincel.fillText("USTED HA PERDIDO",355,190);
+}
+function mostrarResultadoPositivo() {
+    pincel.fillStyle = "green";
+    pincel.font = '38px serif';
+    pincel.st
+    pincel.fillText("¡FELICITACIONES!",355,155);
+    pincel.fillText("USTED HA GANADO",345,200);
+}
+function dibujarCabeza() {
+    pincel.strokeStyle = "#0A3871";
+    pincel.lineWidth = 3;
+    pincel.moveTo(200,110);
+    pincel.beginPath();
+    pincel.arc(200,110,20,0,2*Math.PI);
+    pincel.stroke();
+}
+function dibujarTronco() {
+    pincel.strokeStyle = "#0A3871";
+    pincel.lineWidth = 3;
+    pincel.beginPath();
+    pincel.moveTo(200,130);
+    pincel.lineTo(200,210);
+    pincel.stroke();
+}
+function dibujarPiernaIzq() {
+    pincel.strokeStyle = "#0A3871";
+    pincel.lineWidth = 3;
+    pincel.beginPath();
+    pincel.moveTo(200,210);
+    pincel.lineTo(160,265);
+    pincel.stroke();
+}
+function dibujarPiernaDer() {
+    pincel.strokeStyle = "#0A3871";
+    pincel.lineWidth = 3;
+    pincel.beginPath();
+    pincel.moveTo(200,210);
+    pincel.lineTo(240,265);
+    pincel.stroke();
+}
+function dibujarBrazoIzq() {
+    pincel.strokeStyle = "#0A3871";
+    pincel.lineWidth = 3;
+    pincel.beginPath();
+    pincel.moveTo(200,130);
+    pincel.lineTo(160,190);
+    pincel.stroke();
+}
+function dibujarBrazoDer() {
+    pincel.strokeStyle = "#0A3871";
+    pincel.lineWidth = 3;
+    pincel.beginPath();
+    pincel.moveTo(200,130);
+    pincel.lineTo(240,190);
+    pincel.stroke();
+}
+function dibujarAhorcado() {
+    pincel.strokeStyle = "#B03A2E";
+    pincel.lineWidth = 3.5;
+    pincel.beginPath();
+    pincel.moveTo(135,130);
+    pincel.lineTo(265,130);
+    pincel.stroke();
+}
+ function graficar(){
+    switch (cantidadLetrasErradas) {
+        case 1:
+            setTimeout(dibujarCabeza,300);
+            break;
+        case 2:
+            setTimeout(dibujarCabeza,300);
+            setTimeout(dibujarTronco,300);
+            break;
+        case 3:
+            setTimeout(dibujarCabeza,300);
+            setTimeout(dibujarTronco,300);
+            setTimeout(dibujarPiernaDer,300);
+            break;
+        case 4:
+            setTimeout(dibujarCabeza,300);
+            setTimeout(dibujarTronco,300);
+            setTimeout(dibujarPiernaDer,300);
+            setTimeout(dibujarPiernaIzq,300);
+            break;
+        case 5:
+            setTimeout(dibujarCabeza,300);
+            setTimeout(dibujarTronco,300);
+            setTimeout(dibujarPiernaDer,300);
+            setTimeout(dibujarPiernaIzq,300);
+            setTimeout(dibujarBrazoDer,300);
+            break;
+        case 6:
+            setTimeout(dibujarCabeza,300);
+            setTimeout(dibujarTronco,300);
+            setTimeout(dibujarPiernaDer,300);
+            setTimeout(dibujarPiernaIzq,300);
+            setTimeout(dibujarBrazoDer,300);
+            setTimeout(dibujarBrazoIzq,300);
+            break;
+        case 7:
+            setTimeout(dibujarCabeza,300);
+            setTimeout(dibujarTronco,300);
+            setTimeout(dibujarPiernaDer,300);
+            setTimeout(dibujarPiernaIzq,300);
+            setTimeout(dibujarBrazoDer,300);
+            setTimeout(dibujarBrazoIzq,300);
+            setTimeout(dibujarAhorcado,300);
+            setTimeout(mostrarPalabraSecreta,300);
+            setTimeout(mostrarResultadoNegativo,500);
+            finDelJuego = true;
+            console.log(finDelJuego);
+            break;
+    } 
 }
 
-pintarPantalla();
-dibujarHorca();
-palabraSecreta = seleccionarPalabraSecreta();
-dibujarLineas();
-document.onkeydown = verificarLetraIngresada;
-escribirPalabra(palabraSecreta);
-
-
+iniciarJuego();
+document.onkeydown = verificarLetraIngresada;  
 
 
 
