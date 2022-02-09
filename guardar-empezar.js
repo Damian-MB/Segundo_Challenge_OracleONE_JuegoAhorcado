@@ -1,12 +1,10 @@
-
 var nuevaPalabra = document.querySelector("#nueva-palabra");
 var botonGuardarEmpezar = document.querySelector("#btn-guardar-empezar");
 var error = document.querySelector("#error");
 var validar;
 let expReg = /[A-Z]/;
 
-
-nuevaPalabra.addEventListener("input", function(){
+nuevaPalabra.addEventListener("input", function(){    
     error.textContent ="";
     if (this.value.length <= 8) {
         for (let i = 0; i < this.value.length; i++) {
@@ -27,9 +25,8 @@ nuevaPalabra.addEventListener("input", function(){
 botonGuardarEmpezar.addEventListener("click", function(evento) {
     evento.preventDefault();
     if (validar == true) {
-        matrizPalabrasAleatorias.push(nuevaPalabra.value);
-        alert("Su palabra ha sido agregada a la lista");
         location.href= "file:///C:/Users/damia/CarpetaONE/miSegundoChallengeAluraONE/desktops/jugar.html";
+        alert("Su palabra ha sido agregada. ¡Que comience el juego!");
     } else {
         alert("Hay caracteres incorrectos en el campo de entrada.");
         nuevaPalabra.focus();

@@ -83,18 +83,23 @@ footer {
 
 input {
     height: 48px;
-    width: 500px;
+    width: 520px;
     left: 376px;
     top: 256px;
     border-radius: nullpx;
     font-family: Inter;
-    font-size: 30px;
+    font-size: 23px;
     font-style: normal;
     font-weight: 400;
     line-height: 48px;
     letter-spacing: 0em;
-    text-align: left;
+    text-align: center;
     font-weight: normal;
     color: #0A3871;
 }
-
+ #error {
+     color: red;
+     font-size: larger;
+     font-style: italic;
+     font-weight: 700;
+ }

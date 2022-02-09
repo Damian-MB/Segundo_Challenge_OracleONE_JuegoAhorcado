@@ -17,11 +17,11 @@ var acertada;
 var cantidadLetrasErradas = 0;
 var cantidadLetrasAcertadas = 0;
 var finDelJuego = false;
+var botonDesistir = document.querySelector("#btn-desistir");
+var botonNuevoJuego = document.querySelector("#btn-nuevo-juego");
 
 
-function iniciarJuego() {
-    pintarPantalla();
-    dibujarHorca();
+function sortearPalabra() {
     palabraSecreta = seleccionarPalabraSecreta();
     dibujarLineas();
 }
@@ -158,7 +158,8 @@ function mostrarPalabraSecreta() {
 function mostrarResultadoNegativo() {
     pincel.fillStyle = "red";
     pincel.font = '38px serif';
-    pincel.fillText("USTED HA PERDIDO",355,190);
+    pincel.fillText("¡FIN DEL JUEGO!",355,170);
+    pincel.fillText("USTED HA PERDIDO",355,220);
 }
 function mostrarResultadoPositivo() {
     pincel.fillStyle = "green";
@@ -269,17 +270,33 @@ function dibujarAhorcado() {
             setTimeout(mostrarPalabraSecreta,300);
             setTimeout(mostrarResultadoNegativo,500);
             finDelJuego = true;
-            console.log(finDelJuego);
             break;
     } 
 }
 
-iniciarJuego();
-document.onkeydown = verificarLetraIngresada;  
+pintarPantalla();
+dibujarHorca();
+sortearPalabra();
+document.onkeydown = verificarLetraIngresada; 
 
-
-
-
-
+botonDesistir.addEventListener("click", function(){
+    if (finDelJuego == false) {
+        var opcion = confirm("¿Estás seguro que quieres DESISTIR? La palabra secreta no será revelada!");
+        if (opcion == true) {
+            dibujarCabeza();
+            dibujarTronco();
+            dibujarPiernaDer();
+            dibujarPiernaIzq();
+            dibujarBrazoDer();
+            dibujarBrazoIzq();
+            dibujarAhorcado();
+            mostrarResultadoNegativo();
+            finDelJuego = true;
+    		}
+    }
+})
+botonNuevoJuego.addEventListener("click", function() {
+    location.reload();
+})
 
 
