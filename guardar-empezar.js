@@ -27,8 +27,8 @@ botonGuardarEmpezar.addEventListener("click", function(evento) {
     if (validar == true) {
         var palabraDesafio = nuevaPalabra.value;
         localStorage.setItem("palabraDesafio", palabraDesafio);
-        location.href= "file:///C:/Users/damia/CarpetaONE/miSegundoChallengeAluraONE/desktops/jugar.html";
         nuevaPalabra.value = "";
+        window.location.href= "file:///C:/Users/damia/CarpetaONE/miSegundoChallengeAluraONE/desktops/jugar.html";
     } else {
         alert("Hay caracteres incorrectos en el campo de entrada.");
         nuevaPalabra.focus();
