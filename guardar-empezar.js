@@ -25,8 +25,10 @@ nuevaPalabra.addEventListener("input", function(){
 botonGuardarEmpezar.addEventListener("click", function(evento) {
     evento.preventDefault();
     if (validar == true) {
+        var palabraDesafio = nuevaPalabra.value;
+        localStorage.setItem("palabraDesafio", palabraDesafio);
         location.href= "file:///C:/Users/damia/CarpetaONE/miSegundoChallengeAluraONE/desktops/jugar.html";
-        alert("Su palabra ha sido agregada. ¡Que comience el juego!");
+        nuevaPalabra.value = "";
     } else {
         alert("Hay caracteres incorrectos en el campo de entrada.");
         nuevaPalabra.focus();

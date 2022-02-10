@@ -5,7 +5,8 @@ var matrizPalabrasAleatorias = ["ARBOL", "MARTILLO","CHAPA","ALFAJOR","NEUTRON",
 "VERANO","MUSICA","FUTBOL","NIEVE","LUNA","CUNA","ESPUMA","YESO","PASTO","PELOTA","ZAPATO",
 "CUCHARA","MATE","PLAYA","ARENA","BRILLO","CHACRA","IDIOMA","FLAUTA","PESTAÑA","CANCHA",
 "SOGA","IGLESIA","AVION","AUTOBUS","BIROME","QUESO","PEQUEÑO","CODIGO","SENCILLO","HECHIZO",
-"RIVER","MADRID","AVENTURA","CENTRAL","CABLE","TIJERA","JIRAFA","BRASIL","CREMA","TERMO"];
+"RIVER","MADRID","AVENTURA","CENTRAL","CABLE","TIJERA","JIRAFA","BRASIL","CREMA","TERMO",
+"CONTROL","REGLA","CASINO","BURBUJA","ALMOHADA","PARLANTE"];
 var palabraSecreta = "";
 var letraIngresada = "";
 let expReg = /[A-Za-z]/;
@@ -26,7 +27,7 @@ function sortearPalabra() {
     dibujarLineas();
 }
 function pintarPantalla() {
-    pincel.fillStyle = "#FADBD8";
+    pincel.fillStyle = "#FADEFC";
     pincel.fillRect(0,0,800,380);
 }
 function dibujarHorca() {
@@ -39,8 +40,8 @@ function dibujarHorca() {
     pincel.lineTo(60,300);
     pincel.moveTo(30,300);
     pincel.lineTo(150,300);
-    pincel.moveTo(90,60);
-    pincel.lineTo(60,90);
+    pincel.moveTo(105,60);
+    pincel.lineTo(60,105);
     pincel.stroke();
     pincel.closePath();
     pincel.lineWidth = 2;
@@ -217,7 +218,7 @@ function dibujarBrazoDer() {
     pincel.stroke();
 }
 function dibujarAhorcado() {
-    pincel.strokeStyle = "#B03A2E";
+    pincel.strokeStyle = "red";
     pincel.lineWidth = 3.5;
     pincel.beginPath();
     pincel.moveTo(135,130);
@@ -273,10 +274,18 @@ function dibujarAhorcado() {
             break;
     } 
 }
+function palabraDesafio() {
+    if (localStorage.getItem("palabraDesafio") != null) {
+        palabraSecreta = localStorage.getItem("palabraDesafio");
+        dibujarLineas();
+        localStorage.removeItem("palabraDesafio");
+    } else {
+        sortearPalabra();
+    }
+}
 
 pintarPantalla();
 dibujarHorca();
-sortearPalabra();
 document.onkeydown = verificarLetraIngresada; 
 
 botonDesistir.addEventListener("click", function(){
